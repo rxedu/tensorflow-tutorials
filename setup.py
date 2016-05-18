@@ -1,19 +1,19 @@
 from setuptools import find_packages, setup
 
-from makenew_python_package import __version__
+from tensorflow_tutorials import __version__
 
 with open('README.rst', 'r') as f:
     long_description = f.read()
 
 setup(
-    name='makenew-python-package',
+    name='tensorflow-tutorials',
     version=__version__,
     author='Evan Sosenko',
     author_email='razorx@evansosenko.com',
     packages=find_packages(exclude=['docs']),
-    url='https://github.com/makenew/python-package',
+    url='https://github.com/rxedu/tensorflow-tutorials',
     license='MIT',
-    description='Python package skeleton.',
+    description='Tutorials for TensorFlow.',
     long_description=long_description,
     install_requires=[
     ]
