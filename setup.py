@@ -16,7 +16,7 @@ setup(
     description='Tutorials for TensorFlow.',
     long_description=long_description,
     install_requires=[
-        'numpy',
-        'tensorflow'
+        'numpy>=1.10.0,<2.0.0',
+        'tensorflow>=0.8.0,<1.0.0'
     ]
 )
