@@ -1,13 +1,10 @@
 TensorFlow Tutorials
 =======================
 
-|PyPI| |GitHub-license| |Requires.io| |Travis|
+|GitHub-license| |Requires.io| |Travis|
 
     Built from `makenew/python-package <https://github.com/makenew/python-package>`__.
 
-.. |PyPI| image:: https://img.shields.io/pypi/v/tensorflow-tutorials.svg
-   :target: https://pypi.python.org/pypi/tensorflow-tutorials
-   :alt: PyPI
 .. |GitHub-license| image:: https://img.shields.io/github/license/rxedu/tensorflow-tutorials.svg
    :target: ./LICENSE.txt
    :alt: GitHub license
@@ -26,14 +23,11 @@ Tutorials for TensorFlow.
 Installation
 ------------
 
-This package is registered on the `Python Package Index (PyPI)`_
-as tensorflow_tutorials_.
-
 Add this line to your application's requirements.txt
 
 ::
 
-    tensorflow_tutorials
+    https://github.com/rxedu/tensorflow-tutorials/archive/master.zip
 
 and install it with
 
@@ -48,10 +42,7 @@ Alternatively, install it directly using pip with
 
 ::
 
-    $ pip install tensorflow_tutorials
-
-.. _tensorflow_tutorials: https://pypi.python.org/pypi/tensorflow-tutorials
-.. _Python Package Index (PyPI): https://pypi.python.org/
+    $ pip install https://github.com/rxedu/tensorflow-tutorials/archive/master.zip
 
 Development and Testing
 -----------------------
