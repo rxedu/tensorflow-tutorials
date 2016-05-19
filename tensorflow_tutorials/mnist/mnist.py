@@ -2,6 +2,16 @@
 [MNIST For ML Beginners][MNIST]
 
 [MNIST]: https://www.tensorflow.org/versions/r0.8/tutorials/mnist/beginners/index.html
+
+    from tensorflow_tutorials.mnist import MNIST
+    from tensorflow.examples.tutorials.mnist import input_data
+
+    data = input_data.read_data_sets('data', one_hot=True)
+
+    mnist = MNIST()
+    session = mnist.train(data.train)
+    accuracy = mnist.check_accuracy(data.test, session)
+    print(accuracy) # => 0.9203
 """
 import tensorflow as tf
 
