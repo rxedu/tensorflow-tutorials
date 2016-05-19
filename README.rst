@@ -18,7 +18,9 @@ TensorFlow Tutorials
 Description
 -----------
 
-Tutorials for TensorFlow.
+`Tutorials for TensorFlow`_.
+
+.. _Tutorials for TensorFlow: https://www.tensorflow.org/versions/r0.8/tutorials/index.html
 
 Requirements
 ------------
