@@ -97,6 +97,22 @@ Run tests with
 
     $ python setup.py test
 
+Documentation
+~~~~~~~~~~~~~
+
+Generate documentation with
+
+::
+
+    $ make docs
+
+
+Publish to GitHub Pages with
+
+::
+
+    $ make gh-pages
+
 Contributing
 ------------
 
