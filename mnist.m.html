@@ -1071,6 +1071,16 @@ table {
   <header id="section-intro">
   <h1 class="title"><span class="name">tensorflow_tutorials.mnist</span> module</h1>
   <p><a href="https://www.tensorflow.org/versions/r0.8/tutorials/mnist/beginners/index.html">MNIST For ML Beginners</a></p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow_tutorials.mnist</span> <span class="kn">import</span> <span class="n">MNIST</span>
+<span class="kn">from</span> <span class="nn">tensorflow.examples.tutorials.mnist</span> <span class="kn">import</span> <span class="n">input_data</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">read_data_sets</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">()</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">train</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">check_accuracy</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span> <span class="c1"># =&gt; 0.9203</span>
+</pre></div>
   
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-tensorflow_tutorials.mnist', this);">Show source &equiv;</a></p>
   <div id="source-tensorflow_tutorials.mnist" class="source">
@@ -1078,6 +1088,16 @@ table {
 <span class="sd">[MNIST For ML Beginners][MNIST]</span>
 
 <span class="sd">[MNIST]: https://www.tensorflow.org/versions/r0.8/tutorials/mnist/beginners/index.html</span>
+
+<span class="sd">    from tensorflow_tutorials.mnist import MNIST</span>
+<span class="sd">    from tensorflow.examples.tutorials.mnist import input_data</span>
+
+<span class="sd">    data = input_data.read_data_sets(&#39;data&#39;, one_hot=True)</span>
+
+<span class="sd">    mnist = MNIST()</span>
+<span class="sd">    session = mnist.train(data.train)</span>
+<span class="sd">    accuracy = mnist.check_accuracy(data.test, session)</span>
+<span class="sd">    print(accuracy) # =&gt; 0.9203</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
 
