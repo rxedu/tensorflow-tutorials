@@ -24,7 +24,6 @@ setup(
         'pytest>=2.9.1,<3.0.0',
     ],
     install_requires=[
-        'numpy>=1.10.0,<2.0.0',
         'tensorflow>=0.8.0,<1.0.0'
     ] + pytest_runner
 )
