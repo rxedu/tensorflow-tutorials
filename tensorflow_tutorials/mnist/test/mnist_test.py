@@ -34,8 +34,8 @@ def test_train(mnist_data):
     assert MNIST().train(mnist_data.train) is not None
 
 def test_check_accuracy(mnist_data):
-    m = MNIST() # pylint: disable=invalid-name
-    sess = m.train(mnist_data.train)
-    accuracy = m.check_accuracy(mnist_data.test, sess)
+    mnist = MNIST()
+    session = mnist.train(mnist_data.train)
+    accuracy = mnist.check_accuracy(mnist_data.test, session)
     assert accuracy >= 0.91
     assert accuracy <= 0.93
