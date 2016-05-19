@@ -1,4 +1,11 @@
-all: lint test
+all: clean lint test docs
+
+clean:
+	@rm -rf docs
+
+docs:
+	@pdoc --overwrite --html --html-dir docs tensorflow_tutorials
+
 
 lint:
 	@python setup.py lint
