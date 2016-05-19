@@ -6,6 +6,8 @@ clean:
 docs:
 	@pdoc --overwrite --html --html-dir docs tensorflow_tutorials
 
+gh-pages:
+	@ghp-import -n -p docs/tensorflow_tutorials
 
 lint:
 	@python setup.py lint
