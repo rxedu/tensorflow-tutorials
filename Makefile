@@ -2,6 +2,7 @@ all: clean lint test docs
 
 clean:
 	@rm -rf docs
+	@rm -rf .pytest-incremental deps.json
 
 docs:
 	@pdoc --overwrite --html --html-dir docs tensorflow_tutorials

@@ -8,6 +8,10 @@
 # pdoc documentation
 docs/
 
+# py.test
+.pytest-incremental
+deps.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
