@@ -19,17 +19,19 @@ class MNIST:
     """Model for MNIST."""
     PIXELS = 784
     DIGITS = 10
-    LEARNING_RATE = 0.5
-    TRAIN_COUNT = 1000
-    BATCH_COUNT = 100
 
-    def __init__(self):
+    def __init__(self, learning_rate=0.5, training=1000, batches=100):
         self._inputs = None
         self._train_step = None
         self._model = None
         self._distribution = None
         self._entropy = None
         self._init = None
+        self._config = {
+            'learning_rate': learning_rate,
+            'training': training,
+            'batches': batches
+        }
         self.init()
 
     @property
@@ -90,7 +92,7 @@ class MNIST:
 
         self._train_step = (
             (tf.train
-             .GradientDescentOptimizer(self.LEARNING_RATE)
+             .GradientDescentOptimizer(self._config['learning_rate'])
              .minimize(self.entropy))
         )
 
@@ -129,8 +131,8 @@ class MNIST:
         if session is None:
             session = self.new_session()
 
-        for _ in range(self.TRAIN_COUNT):
-            batch_xs, batch_ys = train_data.next_batch(self.BATCH_COUNT)
+        for _ in range(self._config['training']):
+            batch_xs, batch_ys = train_data.next_batch(self._config['batches'])
 
             session.run(self.train_step, feed_dict={
                 self.inputs: batch_xs,
