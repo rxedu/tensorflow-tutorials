@@ -2,8 +2,6 @@ from sys import argv
 
 from setuptools import find_packages, setup
 
-from tensorflow_tutorials import __version__
-
 with open('README.rst', 'r') as f:
     long_description = f.read()
 
@@ -12,7 +10,7 @@ pytest_runner = ['pytest-runner>=2.7.1,<3.0.0'] if needs_pytest else []
 
 setup(
     name='tensorflow-tutorials',
-    version=__version__,
+    version='0.0.0',
     author='Evan Sosenko',
     author_email='razorx@evansosenko.com',
     packages=find_packages(exclude=['docs']),
