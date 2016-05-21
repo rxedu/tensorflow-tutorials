@@ -1080,6 +1080,7 @@ table {
 <span class="n">session</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">train</span><span class="p">)</span>
 <span class="n">accuracy</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">check_accuracy</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span> <span class="c1"># =&gt; 0.9203</span>
+<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
   
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-tensorflow_tutorials.mnist', this);">Show source &equiv;</a></p>
@@ -1098,6 +1099,7 @@ table {
 <span class="sd">    session = mnist.train(data.train)</span>
 <span class="sd">    accuracy = mnist.check_accuracy(data.test, session)</span>
 <span class="sd">    print(accuracy) # =&gt; 0.9203</span>
+<span class="sd">    session.close()</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
 
@@ -1105,17 +1107,19 @@ table {
     <span class="sd">&quot;&quot;&quot;Model for MNIST.&quot;&quot;&quot;</span>
     <span class="n">PIXELS</span> <span class="o">=</span> <span class="mi">784</span>
     <span class="n">DIGITS</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="n">TRAIN_COUNT</span> <span class="o">=</span> <span class="mi">1000</span>
-    <span class="n">BATCH_COUNT</span> <span class="o">=</span> <span class="mi">100</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">batches</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_inputs</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_train_step</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_entropy</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="n">learning_rate</span><span class="p">,</span>
+            <span class="s1">&#39;training&#39;</span><span class="p">:</span> <span class="n">training</span><span class="p">,</span>
+            <span class="s1">&#39;batches&#39;</span><span class="p">:</span> <span class="n">batches</span>
+        <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
     <span class="nd">@property</span>
@@ -1176,7 +1180,7 @@ table {
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_train_step</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">train</span>
-             <span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LEARNING_RATE</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">])</span>
              <span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entropy</span><span class="p">))</span>
         <span class="p">)</span>
 
@@ -1215,8 +1219,8 @@ table {
         <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_session</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TRAIN_COUNT</span><span class="p">):</span>
-            <span class="n">batch_xs</span><span class="p">,</span> <span class="n">batch_ys</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BATCH_COUNT</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;training&#39;</span><span class="p">]):</span>
+            <span class="n">batch_xs</span><span class="p">,</span> <span class="n">batch_ys</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;batches&#39;</span><span class="p">])</span>
 
             <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_step</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span> <span class="n">batch_xs</span><span class="p">,</span>
@@ -1260,17 +1264,19 @@ table {
     <span class="sd">&quot;&quot;&quot;Model for MNIST.&quot;&quot;&quot;</span>
     <span class="n">PIXELS</span> <span class="o">=</span> <span class="mi">784</span>
     <span class="n">DIGITS</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="n">TRAIN_COUNT</span> <span class="o">=</span> <span class="mi">1000</span>
-    <span class="n">BATCH_COUNT</span> <span class="o">=</span> <span class="mi">100</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">batches</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_inputs</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_train_step</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_entropy</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="n">learning_rate</span><span class="p">,</span>
+            <span class="s1">&#39;training&#39;</span><span class="p">:</span> <span class="n">training</span><span class="p">,</span>
+            <span class="s1">&#39;batches&#39;</span><span class="p">:</span> <span class="n">batches</span>
+        <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
     <span class="nd">@property</span>
@@ -1331,7 +1337,7 @@ table {
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_train_step</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">train</span>
-             <span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LEARNING_RATE</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">])</span>
              <span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entropy</span><span class="p">))</span>
         <span class="p">)</span>
 
@@ -1370,8 +1376,8 @@ table {
         <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_session</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TRAIN_COUNT</span><span class="p">):</span>
-            <span class="n">batch_xs</span><span class="p">,</span> <span class="n">batch_ys</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BATCH_COUNT</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;training&#39;</span><span class="p">]):</span>
+            <span class="n">batch_xs</span><span class="p">,</span> <span class="n">batch_ys</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;batches&#39;</span><span class="p">])</span>
 
             <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_step</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span> <span class="n">batch_xs</span><span class="p">,</span>
@@ -1406,27 +1412,7 @@ table {
           </ul>
           <h3>Class variables</h3>
             <div class="item">
-            <p id="tensorflow_tutorials.mnist.MNIST.BATCH_COUNT" class="name">var <span class="ident">BATCH_COUNT</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-            <div class="item">
             <p id="tensorflow_tutorials.mnist.MNIST.DIGITS" class="name">var <span class="ident">DIGITS</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
-            <div class="item">
-            <p id="tensorflow_tutorials.mnist.MNIST.LEARNING_RATE" class="name">var <span class="ident">LEARNING_RATE</span></p>
             
 
             
@@ -1445,21 +1431,11 @@ table {
 </div>
 
             </div>
-            <div class="item">
-            <p id="tensorflow_tutorials.mnist.MNIST.TRAIN_COUNT" class="name">var <span class="ident">TRAIN_COUNT</span></p>
-            
-
-            
-  
-  <div class="source_cont">
-</div>
-
-            </div>
           <h3>Static methods</h3>
             
   <div class="item">
     <div class="name def" id="tensorflow_tutorials.mnist.MNIST.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, learning_rate=0.5, training=1000, batches=100)</p>
     </div>
     
 
@@ -1468,13 +1444,18 @@ table {
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-tensorflow_tutorials.mnist.MNIST.__init__', this);">Show source &equiv;</a></p>
   <div id="source-tensorflow_tutorials.mnist.MNIST.__init__" class="source">
-    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">batches</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_inputs</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_train_step</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_distribution</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_entropy</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_init</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="n">learning_rate</span><span class="p">,</span>
+        <span class="s1">&#39;training&#39;</span><span class="p">:</span> <span class="n">training</span><span class="p">,</span>
+        <span class="s1">&#39;batches&#39;</span><span class="p">:</span> <span class="n">batches</span>
+    <span class="p">}</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 </pre></div>
 
@@ -1586,8 +1567,8 @@ Will create a new session if not given.</p></div>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_session</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TRAIN_COUNT</span><span class="p">):</span>
-        <span class="n">batch_xs</span><span class="p">,</span> <span class="n">batch_ys</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BATCH_COUNT</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;training&#39;</span><span class="p">]):</span>
+        <span class="n">batch_xs</span><span class="p">,</span> <span class="n">batch_ys</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s1">&#39;batches&#39;</span><span class="p">])</span>
         <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_step</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span> <span class="n">batch_xs</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span><span class="p">:</span> <span class="n">batch_ys</span>
