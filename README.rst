@@ -99,6 +99,12 @@ Run tests with
 
     $ python setup.py test
 
+Run tests automatically on changes with
+
+::
+
+    $ ptw
+
 Documentation
 ~~~~~~~~~~~~~
 
