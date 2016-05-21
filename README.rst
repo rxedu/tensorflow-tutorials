@@ -1,7 +1,7 @@
 TensorFlow Tutorials
 =======================
 
-|GitHub-license| |Requires.io| |Travis|
+|GitHub-license| |Requires.io| |Travis| |Codecov|
 
     Built from `makenew/python-package <https://github.com/makenew/python-package>`__.
 
@@ -14,6 +14,9 @@ TensorFlow Tutorials
 .. |Travis| image:: https://img.shields.io/travis/rxedu/tensorflow-tutorials.svg
    :target: https://travis-ci.org/rxedu/tensorflow-tutorials
    :alt: Travis
+.. |Codecov| image:: https://img.shields.io/codecov/c/github/rxedu/tensorflow-tutorials.svg
+   :target: https://codecov.io/gh/rxedu/tensorflow-tutorials
+   :alt: Codecov
 
 Description
 -----------
