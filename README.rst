@@ -29,7 +29,7 @@ Requirements
 ------------
 
 - Python 3.4 (tested on Linux 64-bit).
-- A TensorFlow_ distribution approtate to your enviorment.
+- A TensorFlow_ distribution appropriate to your environment.
 
 .. _TensorFLow: https://www.tensorflow.org/
 
