@@ -31,7 +31,9 @@ def test_init():
     assert MNIST().init is not None
 
 def test_train(mnist_data):
-    assert MNIST().train(mnist_data.train) is not None
+    session = MNIST().train(mnist_data.train)
+    assert session is not None
+    session.close()
 
 def test_check_accuracy(mnist_data):
     mnist = MNIST()
@@ -39,3 +41,4 @@ def test_check_accuracy(mnist_data):
     accuracy = mnist.check_accuracy(mnist_data.test, session)
     assert accuracy >= 0.91
     assert accuracy <= 0.93
+    session.close()

@@ -12,6 +12,7 @@
     session = mnist.train(data.train)
     accuracy = mnist.check_accuracy(data.test, session)
     print(accuracy) # => 0.9203
+    session.close()
 """
 import tensorflow as tf
 
