@@ -64,7 +64,7 @@ class MNIST:
         if self._distribution is not None:
             return self._distribution
 
-        self._distribution = tf.placeholder(tf.float32, [None, 10])
+        self._distribution = tf.placeholder(tf.float32, [None, self.DIGITS])
 
         return self._distribution
 
