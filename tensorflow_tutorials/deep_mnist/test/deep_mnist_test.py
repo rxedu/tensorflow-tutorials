@@ -49,7 +49,7 @@ def test_check_accuracy(mnist_data):
     mnist = DeepMNIST(training=500)
     session = mnist.train(mnist_data.train)
     accuracy = mnist.check_accuracy(mnist_data.test, session)
-    assert accuracy >= 0.94
+    assert accuracy >= 0.93
     assert accuracy <= 0.96
     session.close()
 
