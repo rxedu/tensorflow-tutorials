@@ -8,7 +8,9 @@
 [TensorFLow]: https://www.tensorflow.org/
 """
 from .mnist import mnist
+from .deep_mnist import deep_mnist
 
 __all__ = [
-    'mnist'
+    'mnist',
+    'deep_mnist'
 ]
