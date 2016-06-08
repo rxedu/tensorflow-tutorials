@@ -8,10 +8,10 @@
 
     data = input_data.read_data_sets('data', one_hot=True)
 
-    mnist = DeepMNIST()
-    session = mnist.train(data.train, quiet=False)
+    mnist = DeepMNIST(training=1000)
+    session = mnist.train(data.train, test_data=data.test)
     accuracy = mnist.check_accuracy(data.test, session)
-    print(accuracy) # => 0.992
+    print(accuracy) # => 0.9631
     session.close()
 """
 from functools import partial, reduce
@@ -37,6 +37,7 @@ class DeepMNIST:
         self._inputs_image = None
         self._keep_prob = None
         self._train_step = None
+        self._accuracy = None
         self._layers = None
         self._model = None
         self._distribution = None
@@ -149,6 +150,20 @@ class DeepMNIST:
 
         return self._train_step
 
+    @property
+    def accuracy(self):
+        """Training accuracy."""
+        if self._accuracy is not None:
+            return self._accuracy
+
+        correct_prediction = tf.equal(
+            tf.argmax(self.model, 1),
+            tf.argmax(self.distribution, 1))
+
+        self._accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+        return self._accuracy
+
     def _get_vars(self):
         return [
             self.inputs,
@@ -157,7 +172,8 @@ class DeepMNIST:
             self.model,
             self.distribution,
             self.entropy,
-            self.train_step
+            self.train_step,
+            self.accuracy
         ]
 
     def init(self):
@@ -176,18 +192,25 @@ class DeepMNIST:
         session.run(self.init())
         return session
 
-    def train(self, train_data, session=None, quiet=True):
+    def train(self, train_data, test_data=None, session=None):
         """
         Train the model with the data and return the session.
         Will create a new session if not given.
+
+        If `test_data` is given, will print out training accuracy
+        every 100 training steps.
         """
         if session is None:
             session = self.new_session()
 
         for i in range(self._config['training']):
-            if i%100 == 0 and not quiet:
-                train_accuracy = self.check_accuracy(train_data, session)
-                print("step %d, training accuracy %g" % (i, train_accuracy))
+            if i % 100 == 0 and test_data:
+                accuracy = session.run(self.accuracy, feed_dict={
+                    self.inputs: test_data.images,
+                    self.distribution: test_data.labels,
+                    self.keep_prob: 1.0
+                })
+                print("step %d, training accuracy %g" % (i, accuracy))
 
             batch_xs, batch_ys = train_data.next_batch(self._config['batches'])
 
@@ -201,13 +224,7 @@ class DeepMNIST:
 
     def check_accuracy(self, test_data, session):
         """Return the accuracy of the model compared with the data."""
-        correct_prediction = tf.equal(
-            tf.argmax(self.model, 1),
-            tf.argmax(self.distribution, 1))
-
-        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
-        return session.run(accuracy, feed_dict={
+        return session.run(self.accuracy, feed_dict={
             self.inputs: test_data.images,
             self.distribution: test_data.labels,
             self.keep_prob: 1.0
