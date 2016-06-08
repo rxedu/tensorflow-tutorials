@@ -1,7 +1,7 @@
 """
 [MNIST For ML Beginners][MNIST]
 
-[MNIST]: https://www.tensorflow.org/versions/r0.8/tutorials/mnist/beginners/index.html
+[MNIST]: https://www.tensorflow.org/versions/r0.9/tutorials/mnist/beginners/index.html
 
     from tensorflow_tutorials.mnist import MNIST
     from tensorflow.examples.tutorials.mnist import input_data
