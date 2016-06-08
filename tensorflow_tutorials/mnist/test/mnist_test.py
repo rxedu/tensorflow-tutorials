@@ -31,7 +31,7 @@ def test_init():
     assert MNIST().init is not None
 
 def test_train(mnist_data):
-    session = MNIST().train(mnist_data.train)
+    session = MNIST(training=5).train(mnist_data.train)
     assert session is not None
     session.close()
 

@@ -40,8 +40,8 @@ def test_init():
     assert DeepMNIST().init is not None
 
 def test_train(mnist_data):
-    session = DeepMNIST(training=100).train(mnist_data.train,
-                                            test_data=mnist_data.test)
+    session = (DeepMNIST(training=5)
+               .train(mnist_data.train, test_data=mnist_data.test))
     assert session is not None
     session.close()
 
