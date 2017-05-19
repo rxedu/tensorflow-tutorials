@@ -77,7 +77,7 @@ class MNIST:
         self._entropy = (
             tf.reduce_mean(-tf.reduce_sum(
                 self.distribution * tf.log(self.model),
-                reduction_indices=[1]))
+                axis=[1]))
         )
 
         return self._entropy
@@ -114,7 +114,7 @@ class MNIST:
             return self._init
 
         self._get_vars()
-        self._init = tf.initialize_all_variables()
+        self._init = tf.global_variables_initializer()
 
         return self._init
 
