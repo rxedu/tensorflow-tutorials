@@ -75,7 +75,7 @@ class MNIST:
             return self._entropy
 
         self._entropy = (
-            tf.reduce_mean(-tf.reduce_sum(
+            tf.reduce_mean(-1 * tf.reduce_sum(
                 self.distribution * tf.log(self.model),
                 axis=[1]))
         )
